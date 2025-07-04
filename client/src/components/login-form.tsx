@@ -4,13 +4,17 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form"
+import loginValidation from "@/pages/login/validation"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
 
-  const form = useForm();
+  const form = useForm({
+    resolver: zodResolver(loginValidation)
+  });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => console.log(data)
 
