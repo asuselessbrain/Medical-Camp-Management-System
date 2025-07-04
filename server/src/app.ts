@@ -1,10 +1,13 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
 
 const app = express()
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+app.get('/', (req: Request, res: Response) => {
+  res.send({
+    name: "Medical Camp Management System",
+    developeBy: "Arfan Ahmed",
+    date: new Date().toLocaleDateString(),
+  })
 })
 
-export default app;
-
+export default app

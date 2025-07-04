@@ -5,8 +5,9 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch",
-    "start:dev": "tsnd --respawn ./src/server.ts"
+    "dev": "tsnd --respawn ./src/server.ts",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\""
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -16,11 +17,16 @@
     "nodemailer": "^7.0.4"
   },
   "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@eslint/json": "^0.12.0",
     "@types/express": "^5.0.3",
     "@typescript-eslint/eslint-plugin": "^8.35.1",
     "@typescript-eslint/parser": "^8.35.1",
     "eslint": "^9.30.1",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.35.1"
   }
 }
