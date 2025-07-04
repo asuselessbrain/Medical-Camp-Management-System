@@ -6,6 +6,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form"
 import loginValidation from "@/pages/login/validation"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Link } from "react-router"
 
 export function LoginForm({
   className,
@@ -27,7 +28,7 @@ export function LoginForm({
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
                 <p className="text-muted-foreground text-balance">
-                  Login to your Acme Inc account
+                  Login to your account
                 </p>
               </div>
               <FormField
@@ -62,9 +63,9 @@ export function LoginForm({
               </Button>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
+                <Link to="/registration" className="underline underline-offset-4">
                   Sign up
-                </a>
+                </Link>
               </div>
             </form>
           </Form>
