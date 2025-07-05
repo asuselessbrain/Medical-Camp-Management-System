@@ -42,11 +42,6 @@ const patientSchema = new Schema<IPatient>({
 
 patientSchema.pre('save', async function (next) {
 
-    const isUserExist = await User.findById(this.userId)
-
-    if (!isUserExist) {
-        throw new Error("User does not exist")
-    }
 
     if (this.isNew) {
         const isPhoneNumberExist = await Patient.findOne({ phoneNumber: this.phoneNumber })

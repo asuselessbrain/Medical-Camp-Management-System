@@ -16,8 +16,8 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     catch(err){
         res.status(500).json({
             success: false,
-            message: "Something went wrong",
-            data: {}
+            message: (err as Error).message,
+            error: err
         })
     }
 }
