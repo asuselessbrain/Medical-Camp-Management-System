@@ -7,17 +7,21 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Card, CardContent } from "./ui/card"
 import { cn } from "@/lib/utils"
 import type { ZodTypeAny } from "zod"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 
-type Field = {
+type Options = { label: string; value: string }
+
+export type Field = {
   name: string;
   label: string;
-  type: string
+  type: "text" | "email" | "password" | "select" | "date";
+  options?: Options[];
 }
 
-interface RegistrationFromProps extends React.ComponentProps<"div">{
+interface RegistrationFromProps extends React.ComponentProps<"div"> {
   formFields: Field[];
   schema: ZodTypeAny;
-  onSubmit: (data: FieldValues)=> void;
+  onSubmit: (data: FieldValues) => void;
 }
 
 
@@ -28,10 +32,10 @@ export function RegistrationForm({
   schema,
   onSubmit,
   ...props
-}: RegistrationFromProps ){
+}: RegistrationFromProps) {
 
 
-    const form = useForm({
+  const form = useForm({
     resolver: zodResolver(schema)
   });
 
@@ -48,27 +52,60 @@ export function RegistrationForm({
                 </p>
               </div>
 
-              {
-                formFields?.map((formField: Field)=>  <FormField
-                key={formField?.name}
-                control={form.control}
-                name={formField?.name}
-                render={({ field }) => (
-                  <FormItem className="grid gap-3">
-                    <FormLabel>{formField?.label}</FormLabel>
-                    <FormControl>
-                      <Input type={formField?.type} placeholder="m@example.com" {...field} value={field?.value || ""} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />)
-              }
+              {formFields?.map((formField: Field) => (
+                formField?.type === "select" ? (
+                  <FormField
+                    key={formField.name}
+                    control={form.control}
+                    name={formField.name}
+                    render={({ field }) => (
+                      <FormItem className="grid gap-3">
+                        <FormLabel>{formField.label}</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select an option" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {formField?.options?.map((opt:Options) => (
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ) : (
+                  <FormField
+                    key={formField.name}
+                    control={form.control}
+                    name={formField.name}
+                    render={({ field }) => (
+                      <FormItem className="grid gap-3">
+                        <FormLabel>{formField.label}</FormLabel>
+                        <FormControl>
+                          <Input
+                            type={formField.type}
+                            placeholder="Enter value"
+                            {...field}
+                            value={field?.value || ""}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )
+              ))}
               <Button type="submit" className="w-full cursor-pointer">
                 Login
               </Button>
               <div className="text-center text-sm">
-                Don&apos;t have an account?{" "}
+                Already have an account?{" "}
                 <Link to="/" className="underline underline-offset-4">
                   Sign In
                 </Link>
