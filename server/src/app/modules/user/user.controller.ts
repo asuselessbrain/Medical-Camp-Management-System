@@ -14,11 +14,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
         })
     }
     catch(err){
-        res.status(500).json({
-            success: false,
-            message: (err as Error).message,
-            error: err
-        })
+        next(err)
     }
 }
 
