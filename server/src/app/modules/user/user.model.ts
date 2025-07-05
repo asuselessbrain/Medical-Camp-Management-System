@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { IUser } from "./user.interface";
 
 const userSchema = new Schema<IUser>({
@@ -21,6 +21,12 @@ const userSchema = new Schema<IUser>({
         },
         required: [true, "Role is required"]
     },
+    password: {
+        type: String,
+        maxlength: [50, "Password must be between 8 to 50 characters"],
+        minlength: [8, "Password must be between 8 to 50 characters"],
+        required: [true, "Password is required"]
+    },
     verificationStatus: {
         type: Boolean,
         default: true
@@ -37,3 +43,6 @@ const userSchema = new Schema<IUser>({
 {
     timestamps: true
 })
+
+export const User = model('user', userSchema);
+
