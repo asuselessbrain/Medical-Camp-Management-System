@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express'
 import cors from 'cors'
 import userRoute from './app/modules/user/user.router';
+import { globalErrorHandlear } from './app/globalErrorHandler/globalErrorHandler';
 
 const app = express();
 
@@ -30,14 +31,6 @@ app.get('/', (req: Request, res: Response) => {
   })
 })
 
-app.use((error: any, req: Request, res: Response, next: NextFunction)=>{
-  const status = error.status || 500;
-  const message = error.messgae || 'Something went wrong'
-  res.status(status).json({
-    success: false,
-    message: message,
-    error: error
-  })
-})
+app.use(globalErrorHandlear)
 
 export default app
