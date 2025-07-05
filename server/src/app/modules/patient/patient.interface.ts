@@ -1,6 +1,8 @@
-export interface IPratient {
+import { Types } from "mongoose";
+
+export interface IPatient {
     _id?: string;
-    userId: string;
+    userId: Types.ObjectId;
     fullName: string;
     phoneNumber: string;
     gender: 'male' | 'female' | 'others';
