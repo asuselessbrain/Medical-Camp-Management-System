@@ -1,4 +1,5 @@
 import { FaHandshakeAngle, FaHospitalUser, FaUser, FaUserDoctor } from "react-icons/fa6";
+import { Link } from "react-router";
 
 const Registration = () => {
     return (
@@ -9,10 +10,10 @@ const Registration = () => {
             </div>
 
             <div className="flex items-center justify-between gap-6">
-                <div className="bg-white rounded-lg border-2 max-w-xs p-12 space-y-4 hover:border-green-500 hover:text-green-500 cursor-pointer duration-600">
+                <Link to="/registration/patient" className="bg-white rounded-lg border-2 max-w-xs p-12 space-y-4 hover:border-green-500 hover:text-green-500 cursor-pointer duration-600">
                     <FaHospitalUser size={40} />
                     <h4 className="text-xl font-normal">I'm a patient, looking for medical help</h4>
-                </div>
+                </Link>
                 <div className="bg-white rounded-lg border max-w-xs p-12 space-y-4 hover:border-green-500 hover:text-green-500 cursor-pointer duration-600">
                     <FaUserDoctor size={40} />
                     <h4 className="text-xl font-normal">I'm a doctor, ready to treat patients</h4>

@@ -1,23 +1,39 @@
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
-import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form"
-import loginValidation from "@/pages/login/validation"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { Link } from "react-router"
+import { useForm, type FieldValues } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
+import { Card, CardContent } from "./ui/card"
+import { cn } from "@/lib/utils"
+import type { ZodTypeAny } from "zod"
 
-export function LoginForm({
+type Field = {
+  name: string;
+  label: string;
+  type: string
+}
+
+interface RegistrationFromProps extends React.ComponentProps<"div">{
+  formFields: Field[];
+  schema: ZodTypeAny;
+  onSubmit: (data: FieldValues)=> void;
+}
+
+
+
+export function RegistrationForm({
   className,
+  formFields,
+  schema,
+  onSubmit,
   ...props
-}: React.ComponentProps<"div">) {
+}: RegistrationFromProps ){
 
-  const form = useForm({
-    resolver: zodResolver(loginValidation)
+
+    const form = useForm({
+    resolver: zodResolver(schema)
   });
-
-  const onSubmit: SubmitHandler<FieldValues> = (data) => console.log(data)
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -31,40 +47,30 @@ export function LoginForm({
                   Login to your account
                 </p>
               </div>
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className="grid gap-3">
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="m@example.com" {...field} value={field?.value || ""} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
-              <FormField
+              {
+                formFields?.map((formField: Field)=>  <FormField
+                key={formField?.name}
                 control={form.control}
-                name="password"
+                name={formField?.name}
                 render={({ field }) => (
                   <FormItem className="grid gap-3">
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{formField?.label}</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="*******" {...field} value={field?.value || ""} />
+                      <Input type={formField?.type} placeholder="m@example.com" {...field} value={field?.value || ""} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              />)
+              }
               <Button type="submit" className="w-full cursor-pointer">
                 Login
               </Button>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <Link to="/registration" className="underline underline-offset-4">
-                  Sign up
+                <Link to="/" className="underline underline-offset-4">
+                  Sign In
                 </Link>
               </div>
             </form>
