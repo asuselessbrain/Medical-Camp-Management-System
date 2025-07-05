@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
 import { IUser } from "./user.interface";
+import bcrypt from 'bcrypt';
+import config from "../../../config";
 
 const userSchema = new Schema<IUser>({
     email: {
@@ -44,5 +46,29 @@ const userSchema = new Schema<IUser>({
     timestamps: true
 })
 
+
+userSchema.pre('save', async function(next){
+    const user = this;
+    user.password = await bcrypt.hash(user.password, Number(config.salt_rounds))
+
+    next()
+})
+
+userSchema.post('save', function(doc, next){
+    doc.password = "";
+    next();
+})
+
+userSchema.pre('save', async function(next){
+    const user = this;
+
+    const userIsExist = await User.findOne({email: user?.email})
+    if(userIsExist){
+        throw new Error("User with this email already exists")
+    }
+    next()
+})
+
 export const User = model('user', userSchema);
+
 

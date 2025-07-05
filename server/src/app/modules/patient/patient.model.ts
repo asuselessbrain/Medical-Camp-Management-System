@@ -1,9 +1,10 @@
 import { model, Schema } from "mongoose";
 import { IPatient } from "./patient.interface";
+import { User } from "../user/user.model";
 
 const patientSchema = new Schema<IPatient>({
     userId: {
-        type:Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: [true, "User id is required"],
         ref: 'User',
     },
@@ -35,8 +36,27 @@ const patientSchema = new Schema<IPatient>({
         required: [true, "Address is required"],
     }
 },
-{
-    timestamps: true
+    {
+        timestamps: true
+    })
+
+patientSchema.pre('save', async function (next) {
+
+    const isUserExist = await User.findById(this.userId)
+
+    if (!isUserExist) {
+        throw new Error("User does not exist")
+    }
+
+    if (this.isNew) {
+        const isPhoneNumberExist = await Patient.findOne({ phoneNumber: this.phoneNumber })
+
+        if (isPhoneNumberExist) {
+            throw new Error("Patient already registered using this phone number")
+        }
+    }
+
+    next()
 })
 
 export const Patient = model('patient', patientSchema)
