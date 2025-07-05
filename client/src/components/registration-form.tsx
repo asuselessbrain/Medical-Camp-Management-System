@@ -15,6 +15,7 @@ export type Field = {
   name: string;
   label: string;
   type: "text" | "email" | "password" | "select" | "date";
+  placehonder: string;
   options?: Options[];
 }
 
@@ -44,7 +45,7 @@ export function RegistrationForm({
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-6 md:p-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-6 md:p-8">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
                 <p className="text-muted-foreground text-balance">
@@ -64,7 +65,7 @@ export function RegistrationForm({
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Select an option" />
+                              <SelectValue placeholder={formField?.placehonder} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -90,7 +91,7 @@ export function RegistrationForm({
                         <FormControl>
                           <Input
                             type={formField.type}
-                            placeholder="Enter value"
+                            placeholder={formField?.placehonder}
                             {...field}
                             value={field?.value || ""}
                           />
