@@ -5,6 +5,5 @@ export interface IPratient {
     phoneNumber: string;
     gender: 'male' | 'female' | 'others';
     dob: Date;
-    password: string;
     address: string 
 }
