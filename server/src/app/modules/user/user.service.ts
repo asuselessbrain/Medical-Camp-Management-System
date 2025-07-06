@@ -50,12 +50,11 @@ const createDoctorInDB = async (userInfo: Partial<IUser>, doctorInfo: Partial<ID
         const newUser = new User(userInfo);
         const userData = await newUser.save({ session })
 
-        const updatedDoctorInfo = {
-            ...doctorInfo,
-            useId: userData._id
-        }
 
-        const newDoctor = new Doctor(updatedDoctorInfo);
+        const newDoctor = new Doctor({
+            ...doctorInfo,
+            userId: userData._id
+        });
         const doctorData = await newDoctor.save({ session })
 
         await session.commitTransaction();
@@ -63,10 +62,13 @@ const createDoctorInDB = async (userInfo: Partial<IUser>, doctorInfo: Partial<ID
 
         return doctorData
 
-    }catch(err){
-       await session.abortTransaction();
-       await session.endSession()
-       throw new Error((err as Error).message)
+    } catch (err) {
+        console.log(err)
+
+        await session.abortTransaction();
+        await session.endSession()
+        throw new Error((err as Error).message)
+
     }
 }
 
