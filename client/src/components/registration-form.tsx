@@ -47,9 +47,9 @@ export function RegistrationForm({
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-6 md:p-8">
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-2xl font-bold">Welcome back</h1>
+                <h1 className="text-2xl font-bold">Welcome To MediCare</h1>
                 <p className="text-muted-foreground text-balance">
-                  Login to your account
+                  Register your account
                 </p>
               </div>
 
