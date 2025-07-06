@@ -14,10 +14,10 @@ const Registration = () => {
                     <FaHospitalUser size={40} />
                     <h4 className="text-xl font-normal">I'm a patient, looking for medical help</h4>
                 </Link>
-                <div className="bg-white rounded-lg border max-w-xs p-12 space-y-4 hover:border-green-500 hover:text-green-500 cursor-pointer duration-600">
+                <Link to="/registration/doctor" className="bg-white rounded-lg border max-w-xs p-12 space-y-4 hover:border-green-500 hover:text-green-500 cursor-pointer duration-600">
                     <FaUserDoctor size={40} />
                     <h4 className="text-xl font-normal">I'm a doctor, ready to treat patients</h4>
-                </div>
+                </Link>
                 <div className="bg-white rounded-lg border max-w-xs p-12 space-y-4 hover:border-green-500 hover:text-green-500 cursor-pointer duration-600">
                     <FaUser size={40} />
                     <h4 className="text-xl font-normal">I'm an organizer, managing camp</h4>
