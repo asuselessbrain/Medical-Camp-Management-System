@@ -61,7 +61,7 @@ const doctorSchema = new Schema<IDoctor>({
         required: [true, "Degrees are required"]
     },
     medicalLicenceDocuments: {
-        types: [String],
+        type: [String],
         required: [true, "Medical Licence Documents are required"]
     }
 })
