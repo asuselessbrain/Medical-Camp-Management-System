@@ -8,9 +8,23 @@ const createUser = CatchAsync(async (req: Request, res: Response) => {
     const userData = { email, password };
     const patientData = { fullName, phoneNumber, gender, dob, address }
     const createUser = await userServices.createUserInDB(userData, patientData);
-    sendResponse(res, 201, "User created Successfully", createUser)
+    sendResponse(res, 201, "Patient created Successfully", createUser)
 })
 
+const createDoctor = CatchAsync(async (req: Request, res: Response) => {
+    const { email, password, fullName, phoneNumber, gender, dob, profileImg, address, medicalRegNo, specialization, yearOfExperience, currentHospitalOrClinic, degrees, medicalLicenceDocuments } = req.body;
+
+    const userInfo = {email, password};
+    const doctorInfo = {fullName, phoneNumber, gender, dob, profileImg, address, medicalRegNo, specialization, yearOfExperience, currentHospitalOrClinic, degrees, medicalLicenceDocuments}
+
+    const result = await userServices.createDoctorInDB(userInfo, doctorInfo)
+
+    sendResponse(res, 201, "Doctor created Successfully", result)
+
+}
+)
+
 export const userControllers = {
-    createUser
+    createUser,
+    createDoctor
 }

@@ -71,5 +71,6 @@ const createDoctorInDB = async (userInfo: Partial<IUser>, doctorInfo: Partial<ID
 }
 
 export const userServices = {
-    createUserInDB
+    createUserInDB,
+    createDoctorInDB
 }
