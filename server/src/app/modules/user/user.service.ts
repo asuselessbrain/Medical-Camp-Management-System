@@ -24,7 +24,7 @@ const createUserInDB = async (userData: Partial<IUser>, patientData: Partial<IPa
 
         const newPatient = new Patient({
             ...patientData,
-            // userId: savedUser._id
+            userId: savedUser._id
         });
 
         const savedPatient = await newPatient.save({ session });

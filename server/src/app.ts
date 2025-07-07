@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express'
 import cors from 'cors'
-import userRoute from './app/modules/user/user.router';
 import { globalErrorHandlear } from './app/globalErrorHandler/globalErrorHandler';
 import { notFound } from './app/globalErrorHandler/notFound';
+import router from './app/routes/router';
 
 const app = express();
 
@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cors({origin: ['http://localhost:5173', 'http://localhost:5174']}))
 
-app.use('/api/user', userRoute);
+app.use('/api', router);
 
 app.get('/', (req: Request, res: Response) => {
   res.send({
