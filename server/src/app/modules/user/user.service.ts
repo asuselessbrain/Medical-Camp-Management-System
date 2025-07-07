@@ -6,22 +6,9 @@ import { Patient } from "../patient/patient.model";
 import { IDoctor } from "../doctor/doctor.interface";
 import { Doctor } from "../doctor/doctor.model";
 import { StatusCodes } from "http-status-codes";
+import { AppError } from "../../error/appError";
 
-export class AppError extends Error{
-    public statusCode: number;
 
-    constructor(statusCode: number, message: string, stack = "") {
-        super(message)
-        this.statusCode = statusCode;
-
-        if(stack){
-            this.stack = stack
-        }
-        else{
-            Error.captureStackTrace(this, this.constructor)
-        }
-    }
-}
 
 const createUserInDB = async (userData: Partial<IUser>, patientData: Partial<IPatient>) => {
 
@@ -37,7 +24,7 @@ const createUserInDB = async (userData: Partial<IUser>, patientData: Partial<IPa
 
         const newPatient = new Patient({
             ...patientData,
-            userId: savedUser._id
+            // userId: savedUser._id
         });
 
         const savedPatient = await newPatient.save({ session });
@@ -84,7 +71,7 @@ const createDoctorInDB = async (userInfo: Partial<IUser>, doctorInfo: Partial<ID
 
         await session.abortTransaction();
         await session.endSession()
-        throw new Error((err as Error).message)
+        throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR,(err as Error).message)
 
     }
 }

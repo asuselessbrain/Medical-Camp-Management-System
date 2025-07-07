@@ -2,6 +2,8 @@ import { model, Schema } from "mongoose";
 import { IUser } from "./user.interface";
 import bcrypt from 'bcrypt';
 import config from "../../../config";
+import { StatusCodes } from "http-status-codes";
+import { AppError } from "../../error/appError";
 
 const userSchema = new Schema<IUser>({
     email: {
@@ -80,12 +82,12 @@ userSchema.pre('save', async function (next) {
     if (user.isNew) {
         const userIsExist = await User.findOne({ email: user?.email })
         if (userIsExist) {
-            throw new Error("User with this email already exists")
+            throw new AppError(StatusCodes.CONFLICT,"User with this email already exists")
         }
 
         const isDoctorExist = await User.findOne({ phoneNumber: user.phoneNumber })
         if (isDoctorExist) {
-            throw new Error('User already registered using this phone number')
+            throw new AppError(StatusCodes.CONFLICT,'User already registered using this phone number')
         }
     }
     if (user.isModified("password")) {
