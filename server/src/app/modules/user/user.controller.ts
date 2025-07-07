@@ -2,13 +2,14 @@ import { Request, Response } from "express";
 import { userServices } from "./user.service";
 import { CatchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/response";
+import { StatusCodes } from "http-status-codes";
 
 const createUser = CatchAsync(async (req: Request, res: Response) => {
     const { email, password, fullName, phoneNumber, gender, dob, address } = req.body
     const userData = { email, password, fullName, phoneNumber, gender, dob, address };
     const patientData = {}
     const createUser = await userServices.createUserInDB(userData, patientData);
-    sendResponse(res, 201, "Patient created Successfully", createUser)
+    sendResponse(res, StatusCodes.CREATED, "Patient created Successfully", createUser)
 })
 
 const createDoctor = CatchAsync(async (req: Request, res: Response) => {
@@ -19,7 +20,7 @@ const createDoctor = CatchAsync(async (req: Request, res: Response) => {
 
     const result = await userServices.createDoctorInDB(userInfo, doctorInfo)
 
-    sendResponse(res, 201, "Doctor created Successfully", result)
+    sendResponse(res, StatusCodes.CREATED, "Doctor created Successfully", result)
 
 })
 

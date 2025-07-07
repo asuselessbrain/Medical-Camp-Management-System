@@ -14,7 +14,7 @@ type Options = { label: string; value: string }
 export type Field = {
   name: string;
   label: string;
-  type: "text" | "email" | "password" | "select" | "date";
+  type: "text" | "email" | "password" | "select" | "date" | "file";
   placehonder: string;
   options?: Options[];
 }
@@ -24,7 +24,6 @@ interface RegistrationFromProps extends React.ComponentProps<"div"> {
   schema: ZodTypeAny;
   onSubmit: (data: FieldValues) => void;
 }
-
 
 
 export function RegistrationForm({
@@ -69,13 +68,37 @@ export function RegistrationForm({
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {formField?.options?.map((opt:Options) => (
+                            {formField?.options?.map((opt: Options) => (
                               <SelectItem key={opt.value} value={opt.value}>
                                 {opt.label}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ) : formField?.type === "file" ? (
+                  <FormField
+                    key={formField.name}
+                    control={form.control}
+                    name={formField.name}
+                    render={({ field: { onChange, ...field } }) => (
+                      <FormItem className="grid gap-3">
+                        <FormLabel>{formField.label}</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="file"
+                            multiple
+                            accept="image/*"
+                            onChange={(e) => {
+                              const files = e.target.files ? Array.from(e.target.files) : [];
+                              onChange(files);
+                            }}
+                            value={field?.value || ""}
+                          />
+                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}

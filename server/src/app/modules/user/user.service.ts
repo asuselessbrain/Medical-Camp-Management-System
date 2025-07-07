@@ -5,6 +5,23 @@ import { User } from "./user.model";
 import { Patient } from "../patient/patient.model";
 import { IDoctor } from "../doctor/doctor.interface";
 import { Doctor } from "../doctor/doctor.model";
+import { StatusCodes } from "http-status-codes";
+
+export class AppError extends Error{
+    public statusCode: number;
+
+    constructor(statusCode: number, message: string, stack = "") {
+        super(message)
+        this.statusCode = statusCode;
+
+        if(stack){
+            this.stack = stack
+        }
+        else{
+            Error.captureStackTrace(this, this.constructor)
+        }
+    }
+}
 
 const createUserInDB = async (userData: Partial<IUser>, patientData: Partial<IPatient>) => {
 
@@ -34,7 +51,7 @@ const createUserInDB = async (userData: Partial<IUser>, patientData: Partial<IPa
     } catch (error) {
         await session.abortTransaction();
         await session.endSession()
-        throw new Error((error as Error).message)
+        throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR,(error as Error).message)
     }
 
 }

@@ -71,14 +71,14 @@ export const doctorValidationSchema = z.object({
         }),
 
     degrees: z
-        .array(z.string(), {
+        .string({
             required_error: "Degrees are required",
         })
         .min(1, "At least one degree is required"),
 
-    medicalLicenceDocuments: z
-        .array(z.string(), {
-            required_error: "Medical Licence Documents are required",
-        })
-        .min(1, "At least one medical licence document is required"),
+    mmedicalLicenceDocuments: z
+        .any()
+        .refine((files) => Array.isArray(files) && files.length > 0, {
+            message: "At least one medical licence document is required",
+        }),
 });

@@ -58,11 +58,10 @@ const DoctorRegistration = () => {
             type: "text",
             placehonder: "Address"
         },
-        // TODO: Make file
         {
             name: "profileImg",
             label: "Profile Image",
-            type: "text",
+            type: "file",
             placehonder: "Profile Image"
         },
         {
@@ -105,10 +104,11 @@ const DoctorRegistration = () => {
         {
             name: "medicalLicenceDocuments",
             label: "Medical Licence Documents",
-            type: "text",
+            type: "file",
             placehonder: "Medical Licence Documents"
         },
     ]
+
 
     const handleSubmit: SubmitHandler<FieldValues> = (data) => {
         console.log(data)
