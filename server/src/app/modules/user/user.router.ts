@@ -6,8 +6,13 @@ import { doctorValidationSchema } from "../doctor/doctorValidation";
 
 const userRoute = Router()
 
+// create patient
 userRoute.post('/create-patient', validateRequest(zodPatientValidation.patientValidation), userControllers.createPatient);
+// create doctor
 userRoute.post('/create-doctor', validateRequest(doctorValidationSchema), userControllers.createDoctor);
-userRoute.get('/patient', userControllers.getAllPatient)
+// get all patients
+userRoute.get('/patients', userControllers.getAllPatient)
+// get all doctor
+userRoute.get('/doctors', userControllers.getAllDoctor)
 
 export default userRoute;
