@@ -17,5 +17,9 @@ const login = async(payload: ILogin)=>{
         throw new AppError(StatusCodes.UNAUTHORIZED, "Wrong email or password!")
     }
 
-    console.log(payload)
+    console.log("userLoged in successfully")
+}
+
+export const authServices = {
+    login,
 }
