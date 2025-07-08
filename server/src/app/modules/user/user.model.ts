@@ -25,33 +25,6 @@ const userSchema = new Schema<IUser>({
         },
         required: [true, "Role is required"]
     },
-    fullName: {
-        type: String,
-        required: [true, "Full Name is required"],
-        maxlength: [50, 'Name must be between 3 to 50 characters'],
-        minlength: [3, "Name must must be between 3 to 50 characters"]
-    },
-    phoneNumber: {
-        type: String,
-        required: [true, "Phone Number is required"],
-        unique: [true, 'The phone number already exist'],
-    },
-    gender: {
-        type: String,
-        enum: {
-            values: ['male', 'female', 'others'],
-            message: "Gender `{VALUE}` is not valid"
-        },
-        required: [true, "Gender is required"]
-    },
-    dob: {
-        type: Date,
-        required: [true, "Date of birth is required"]
-    },
-    address: {
-        type: String,
-        required: [true, "Address is required"],
-    },
     password: {
         type: String,
         maxlength: [50, "Password must be between 8 to 50 characters"],
@@ -83,11 +56,6 @@ userSchema.pre('save', async function (next) {
         const userIsExist = await User.findOne({ email: user?.email })
         if (userIsExist) {
             throw new AppError(StatusCodes.CONFLICT,"User with this email already exists")
-        }
-
-        const isDoctorExist = await User.findOne({ phoneNumber: user.phoneNumber })
-        if (isDoctorExist) {
-            throw new AppError(StatusCodes.CONFLICT,'User already registered using this phone number')
         }
     }
     if (user.isModified("password")) {

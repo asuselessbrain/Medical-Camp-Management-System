@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
 import { IDoctor } from "./doctor.interface";
+import { AppError } from "../../error/appError";
+import { StatusCodes } from "http-status-codes";
 
 const doctorSchema = new Schema<IDoctor>({
     userId: {
@@ -7,6 +9,33 @@ const doctorSchema = new Schema<IDoctor>({
         required: [true, "User id is required"],
         ref: 'User',
         unique: true
+    },
+    fullName: {
+        type: String,
+        required: [true, "Full Name is required"],
+        maxlength: [50, 'Name must be between 3 to 50 characters'],
+        minlength: [3, "Name must must be between 3 to 50 characters"]
+    },
+    phoneNumber: {
+        type: String,
+        required: [true, "Phone Number is required"],
+        unique: [true, 'The phone number already exist'],
+    },
+    gender: {
+        type: String,
+        enum: {
+            values: ['male', 'female', 'others'],
+            message: "Gender `{VALUE}` is not valid"
+        },
+        required: [true, "Gender is required"]
+    },
+    dob: {
+        type: Date,
+        required: [true, "Date of birth is required"]
+    },
+    address: {
+        type: String,
+        required: [true, "Address is required"],
     },
     profileImg: {
         type: String,
@@ -43,10 +72,15 @@ doctorSchema.pre('save', async function (next) {
     const doctor = this;
     if (doctor.isNew) {
 
+        const isPatientExistWithThePhoneNumber = await Doctor.findOne({ phoneNumber: doctor.phoneNumber })
+        if (isPatientExistWithThePhoneNumber) {
+            throw new AppError(StatusCodes.CONFLICT, 'Doctor already registered using this phone number')
+        }
+
         const isDoctorExistInRegistrationNo = await Doctor.findOne({ medicalRegNo: doctor.medicalRegNo })
 
         if (isDoctorExistInRegistrationNo) {
-            throw new Error('Doctor already registered using this medical registration number')
+            throw new AppError(StatusCodes.CONFLICT, 'Doctor already registered using this medical registration number')
         }
 
     }
