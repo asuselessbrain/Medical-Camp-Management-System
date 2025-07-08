@@ -1,6 +1,5 @@
 import { model, Schema } from "mongoose";
 import { IPatient } from "./patient.interface";
-import { User } from "../user/user.model";
 import { AppError } from "../../error/appError";
 import { StatusCodes } from "http-status-codes";
 

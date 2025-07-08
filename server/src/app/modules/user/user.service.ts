@@ -10,7 +10,7 @@ import { AppError } from "../../error/appError";
 
 
 
-const createUserInDB = async (userData: Partial<IUser>, patientData: Partial<IPatient>) => {
+const createPatientInDB = async (userData: Partial<IUser>, patientData: Partial<IPatient>) => {
 
     userData.role = 'patient'
 
@@ -41,6 +41,11 @@ const createUserInDB = async (userData: Partial<IUser>, patientData: Partial<IPa
         throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR,(error as Error).message)
     }
 
+}
+
+const allPatientsFromDB = async() => {
+    const result = await Patient.find();
+    return result;
 }
 
 const createDoctorInDB = async (userInfo: Partial<IUser>, doctorInfo: Partial<IDoctor>) => {
@@ -77,6 +82,7 @@ const createDoctorInDB = async (userInfo: Partial<IUser>, doctorInfo: Partial<ID
 }
 
 export const userServices = {
-    createUserInDB,
-    createDoctorInDB
+    createPatientInDB,
+    createDoctorInDB,
+    allPatientsFromDB
 }
