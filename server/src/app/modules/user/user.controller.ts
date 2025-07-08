@@ -32,5 +32,6 @@ const createDoctor = CatchAsync(async (req: Request, res: Response) => {
 
 export const userControllers = {
     createPatient,
-    createDoctor
+    createDoctor,
+    getAllPatient
 }
