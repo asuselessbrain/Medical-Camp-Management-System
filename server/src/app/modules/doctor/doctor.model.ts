@@ -7,7 +7,7 @@ const doctorSchema = new Schema<IDoctor>({
     userId: {
         type: Schema.Types.ObjectId,
         required: [true, "User id is required"],
-        ref: 'User',
+        ref: 'user',
         unique: true
     },
     fullName: {

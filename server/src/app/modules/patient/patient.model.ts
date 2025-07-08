@@ -7,7 +7,7 @@ const patientSchema = new Schema<IPatient>({
     userId: {
         type: Schema.Types.ObjectId,
         required: [true, "User id is required"],
-        ref: 'User',
+        ref: 'user',
         unique: true
     },
     fullName: {

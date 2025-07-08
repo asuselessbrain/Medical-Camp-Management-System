@@ -9,7 +9,7 @@ import { StatusCodes } from "http-status-codes";
 import { AppError } from "../../error/appError";
 
 
-
+// create patient
 const createPatientInDB = async (userData: Partial<IUser>, patientData: Partial<IPatient>) => {
 
     userData.role = 'patient'
@@ -43,11 +43,13 @@ const createPatientInDB = async (userData: Partial<IUser>, patientData: Partial<
 
 }
 
+// get all patient
 const allPatientsFromDB = async() => {
-    const result = await Patient.find();
+    const result = await Patient.find().populate('userId');
     return result;
 }
 
+// create doctor
 const createDoctorInDB = async (userInfo: Partial<IUser>, doctorInfo: Partial<IDoctor>) => {
     userInfo.role = 'doctor';
 
@@ -81,8 +83,15 @@ const createDoctorInDB = async (userInfo: Partial<IUser>, doctorInfo: Partial<ID
     }
 }
 
+// get all doctor
+const allDoctorsFromDB = async() => {
+    const result = await Doctor.find().populate('userId');
+    return result;
+}
+
 export const userServices = {
     createPatientInDB,
     createDoctorInDB,
-    allPatientsFromDB
+    allPatientsFromDB,
+    allDoctorsFromDB
 }
