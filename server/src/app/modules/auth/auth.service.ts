@@ -39,9 +39,7 @@ const login = async (payload: ILogin) => {
         role: isUserExist?.role
     }
 
-    const token = jwt.sign({
-        jwtPayload
-    }, config?.jwt?.jwt_token as string, { expiresIn: '7d' });
+    const token = jwt.sign(jwtPayload, config?.jwt?.jwt_token as string, { expiresIn: '7d' });
 
     return {
         token: token
