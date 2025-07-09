@@ -5,8 +5,9 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import config from "../../config";
 import { CatchAsync } from "../utils/catchAsync";
 import { User } from "../modules/user/user.model";
+import { TUserRole } from "../modules/user/user.interface";
 
-export const auth = () => {
+export const auth = (...verificationRole: TUserRole[]) => {
     return CatchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const token = req?.headers?.authorization;
 
@@ -39,6 +40,11 @@ export const auth = () => {
         if(user?.userStatus === 'rejected'){
             throw new AppError(StatusCodes.FORBIDDEN, "You are blocked can not access the content!")
         }
+
+        if(verificationRole && !verificationRole.includes(decoded?.role)){
+            throw new AppError(StatusCodes.FORBIDDEN, "You are not authorized for the content!")
+        }
+
 
         console.log(decoded)
         next()
