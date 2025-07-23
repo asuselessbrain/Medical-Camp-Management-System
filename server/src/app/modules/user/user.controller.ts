@@ -1,4 +1,4 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import { userServices } from "./user.service";
 import { CatchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/response";
@@ -15,6 +15,7 @@ const createPatient = CatchAsync(async (req: Request, res: Response) => {
 
 // get all patient
 const getAllPatient = CatchAsync(async(req: Request, res: Response) => {
+    console.log(req?.user)
     const result = await userServices.allPatientsFromDB();
     sendResponse(res, StatusCodes.OK, "Patient retrive succefully", result);
 })

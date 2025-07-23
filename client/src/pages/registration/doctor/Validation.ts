@@ -46,8 +46,9 @@ export const doctorValidationSchema = z.object({
         }),
 
     profileImg: z
-        .string({
-            required_error: "Profile Image is required",
+        .any()
+        .refine((files) => Array.isArray(files) && files.length > 0, {
+            message: "At least one medical licence document is required",
         }),
 
     medicalRegNo: z
@@ -76,7 +77,7 @@ export const doctorValidationSchema = z.object({
         })
         .min(1, "At least one degree is required"),
 
-    mmedicalLicenceDocuments: z
+    medicalLicenceDocuments: z
         .any()
         .refine((files) => Array.isArray(files) && files.length > 0, {
             message: "At least one medical licence document is required",
