@@ -7,15 +7,14 @@ import { StatusCodes } from "http-status-codes";
 // create patient
 const createPatient = CatchAsync(async (req: Request, res: Response) => {
     const { email, password, fullName, phoneNumber, gender, dob, address } = req.body
-    const userData = { email, password, fullName, phoneNumber, gender, dob, address };
-    const patientData = {}
+    const userData = { email, password };
+    const patientData = {fullName, phoneNumber, gender, dob, address}
     const createPatient = await userServices.createPatientInDB(userData, patientData);
     sendResponse(res, StatusCodes.CREATED, "Patient created Successfully", createPatient)
 })
 
 // get all patient
 const getAllPatient = CatchAsync(async(req: Request, res: Response) => {
-    console.log(req?.user)
     const result = await userServices.allPatientsFromDB();
     sendResponse(res, StatusCodes.OK, "Patient retrive succefully", result);
 })

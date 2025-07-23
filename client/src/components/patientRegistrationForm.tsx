@@ -8,7 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Link } from "react-router"
 import patientRegistrationValidation from "@/pages/registration/patient/validation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
-import { useGetAllQuery } from "@/redux/baseApi/BaseApi"
+import { useCreatePatientMutation } from "@/redux/features/auth/auth"
+import { toast } from "sonner"
 
 export function PatientRegistrationForm({
     className,
@@ -19,11 +20,28 @@ export function PatientRegistrationForm({
         resolver: zodResolver(patientRegistrationValidation)
     });
 
-    const {data, isLoading} = useGetAllQuery(undefined)
-    
+    const [createPatient, { data, isLoading, isError }] = useCreatePatientMutation()
+
     console.log(data, isLoading)
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => console.log(data)
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        try {
+            const res = await createPatient(data);
+
+            if (res?.data?.success) {
+                toast.success(res?.data?.message)
+            }
+            if (isError) {
+                toast.error((
+                    res.error as { data?: { message?: string } }
+                )?.data?.message || "Something went wrong")
+            }
+        } catch (err) {
+            toast.error((
+                    err as { data?: { message?: string } }
+                )?.data?.message || "Something went wrong")
+        }
+    }
 
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>

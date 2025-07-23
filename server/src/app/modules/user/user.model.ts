@@ -13,7 +13,7 @@ const userSchema = new Schema<IUser>({
         lowercase: true,
         trim: true,
         match: [
-            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$/,
+            /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
             'Please enter a valid email address',
         ],
     },
@@ -50,16 +50,15 @@ const userSchema = new Schema<IUser>({
 
 
 userSchema.pre('save', async function (next) {
-    const user = this;
 
-    if (user.isNew) {
-        const userIsExist = await User.findOne({ email: user?.email })
+    if (this.isNew) {
+        const userIsExist = await User.findOne({ email: this?.email })
         if (userIsExist) {
-            throw new AppError(StatusCodes.CONFLICT,"User with this email already exists")
+            throw new AppError(StatusCodes.CONFLICT, "User with this email already exists")
         }
     }
-    if (user.isModified("password")) {
-        user.password = await bcrypt.hash(user.password, Number(config.salt_rounds));
+    if (this.isModified("password")) {
+        this.password = await bcrypt.hash(this.password, Number(config.salt_rounds));
     }
 
 
