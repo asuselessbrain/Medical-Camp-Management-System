@@ -20,11 +20,14 @@ export function PatientRegistrationForm({
         resolver: zodResolver(patientRegistrationValidation)
     });
 
-    const [createPatient, { data, isLoading, isError }] = useCreatePatientMutation()
-
-    console.log(data, isLoading)
+    const [createPatient, { isLoading, isError }] = useCreatePatientMutation()
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+
+        if(data?.password !== data?.confirmPassword){
+            toast.error("Password and Confirm Password must be matched");
+            return;
+        }
         try {
             const res = await createPatient(data);
 
@@ -168,9 +171,13 @@ export function PatientRegistrationForm({
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="w-full cursor-pointer">
+                            {
+                                isLoading? <Button disabled className="w-full cursor-not-allowed">
+                                Registering...
+                            </Button> : <Button type="submit" className="w-full cursor-pointer">
                                 Register
                             </Button>
+                            }
                             <div className="text-center text-sm">
                                 Don&apos;t have an account?{" "}
                                 <Link to="/registration" className="underline underline-offset-4">
