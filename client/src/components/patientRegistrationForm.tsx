@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Link } from "react-router"
 import patientRegistrationValidation from "@/pages/registration/patient/validation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
+import { useGetAllQuery } from "@/redux/baseApi/BaseApi"
 
 export function PatientRegistrationForm({
     className,
@@ -17,6 +18,10 @@ export function PatientRegistrationForm({
     const form = useForm({
         resolver: zodResolver(patientRegistrationValidation)
     });
+
+    const {data, isLoading} = useGetAllQuery(undefined)
+    
+    console.log(data, isLoading)
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => console.log(data)
 
