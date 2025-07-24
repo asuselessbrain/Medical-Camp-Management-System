@@ -1,6 +1,15 @@
 import { z } from "zod";
 
 export const doctorValidationSchema = z.object({
+    fullName: z
+        .string({
+            required_error: "Full Name is required",
+        })
+        .min(3, "Name must be between 3 to 50 characters")
+        .max(50, "Name must be between 3 to 50 characters")
+        .regex(/^[^\p{Emoji}\p{Emoji_Presentation}]+$/u, {
+            message: "Name cannot contain emojis"
+        }),
     email: z.string()
         .regex(
             /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -16,16 +25,10 @@ export const doctorValidationSchema = z.object({
                     "Password must contain at least one uppercase letter, one lowercase letter, and one special character",
             }
         ),
-    fullName: z
-        .string({
-            required_error: "Full Name is required",
-        })
-        .min(3, "Name must be between 3 to 50 characters")
-        .max(50, "Name must be between 3 to 50 characters")
-        .regex(/^[^\p{Emoji}\p{Emoji_Presentation}]+$/u, {
-            message: "Name cannot contain emojis"
-        }),
 
+    confirmPassword: z.string({ required_error: "Password is required" })
+        .min(8, "Password must be between 8 to 50 characters")
+        .max(50, "Password must be between 8 to 50 characters"),
     phoneNumber: z
         .string({
             required_error: "Phone Number is required",
@@ -36,19 +39,13 @@ export const doctorValidationSchema = z.object({
         invalid_type_error: "Gender must be 'male', 'female', or 'others'",
     }),
 
-    dob: z.coerce.date({
+    dob: z.string({
         required_error: "Date of birth is required",
     }),
 
     address: z
         .string({
             required_error: "Address is required",
-        }),
-
-    profileImg: z
-        .any()
-        .refine((files) => Array.isArray(files) && files.length > 0, {
-            message: "At least one medical licence document is required",
         }),
 
     medicalRegNo: z
