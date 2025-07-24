@@ -10,6 +10,7 @@ import patientRegistrationValidation from "@/pages/registration/patient/validati
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { useCreatePatientMutation } from "@/redux/features/auth/auth"
 import { toast } from "sonner"
+import { useNavigate } from "react-router"
 
 export function PatientRegistrationForm({
     className,
@@ -20,7 +21,8 @@ export function PatientRegistrationForm({
         resolver: zodResolver(patientRegistrationValidation)
     });
 
-    const [createPatient, { isLoading, isError }] = useCreatePatientMutation()
+    const [createPatient, { isLoading, isError }] = useCreatePatientMutation();
+    const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
 
@@ -33,6 +35,7 @@ export function PatientRegistrationForm({
 
             if (res?.data?.success) {
                 toast.success(res?.data?.message)
+                navigate("/login")
             }
             if (isError) {
                 toast.error((
@@ -165,7 +168,7 @@ export function PatientRegistrationForm({
                                     <FormItem className="grid gap-3">
                                         <FormLabel>Address</FormLabel>
                                         <FormControl>
-                                            <Input type="text" placeholder="017xx-xxxxxx" {...field} value={field?.value || ""} />
+                                            <Input type="text" placeholder="Dumki, Patuakhali" {...field} value={field?.value || ""} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -180,8 +183,8 @@ export function PatientRegistrationForm({
                             }
                             <div className="text-center text-sm">
                                 Don&apos;t have an account?{" "}
-                                <Link to="/registration" className="underline underline-offset-4">
-                                    Sign up
+                                <Link to="/login" className="underline underline-offset-4">
+                                    Sign In
                                 </Link>
                             </div>
                         </form>
