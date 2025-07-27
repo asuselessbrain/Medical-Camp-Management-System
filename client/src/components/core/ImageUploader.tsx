@@ -4,10 +4,11 @@ import { Label } from "../ui/label";
 interface IProps {
     setImage: React.Dispatch<React.SetStateAction<[] | File[]>>;
     setImagePreview: React.Dispatch<React.SetStateAction<[] | string[]>>;
-    label?: string
+    label?: string;
+    id: string
 }
 
-const ImageUploader = ({setImage, setImagePreview, label = "Upload Image"}: IProps) => {
+const ImageUploader = ({setImage, setImagePreview, label = "Upload Image", id}: IProps) => {
 
     const handleSetImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files![0]
@@ -26,8 +27,8 @@ const ImageUploader = ({setImage, setImagePreview, label = "Upload Image"}: IPro
 
     return (
         <div className="grid w-full items-center gap-3">
-            <Label htmlFor="profileImg">{label}</Label>
-            <Input id="profileImg" onChange={handleSetImage} type="file" />
+            <Label htmlFor={id}>{label}</Label>
+            <Input id={id} onChange={handleSetImage} type="file" />
         </div>
     )
 }

@@ -21,6 +21,9 @@ export function DoctorRegistrationForm({
     const [image, setImage] = useState<File[] | []>([]);
     const [imagePreview, setImagePreview] = useState<string[] | []>([])
 
+    const [degrees, setDegrees] = useState<File[] | []>([]);
+    const [degreePreview, setDegreePreview] = useState<string[] | []>([])
+
     const form = useForm({
         resolver: zodResolver(doctorValidationSchema)
     });
@@ -28,6 +31,7 @@ export function DoctorRegistrationForm({
     const onSubmit: SubmitHandler<FieldValues> = (data) => console.log(data)
 
     console.log(image)
+    console.log(degrees)
 
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -154,8 +158,84 @@ export function DoctorRegistrationForm({
                                     </FormItem>
                                 )}
                             />
-                            <ImageUploader setImage={setImage} setImagePreview={setImagePreview} label="Profile Picture" />
+                            <ImageUploader setImage={setImage} setImagePreview={setImagePreview} label="Profile Picture" id="profileImage" />
                             <ImagePreviewer setImageFiles={setImage} imagePreview={imagePreview} setImagePreview={setImagePreview} />
+
+                            <FormField
+                                control={form.control}
+                                name="medicalRegNo"
+                                render={({ field }) => (
+                                    <FormItem className="grid gap-3">
+                                        <FormLabel>Medical Registration No</FormLabel>
+                                        <FormControl>
+                                            <Input type="text" placeholder="A-41284" {...field} value={field?.value || ""} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            {/* TODO make dropdown */}
+
+                            <FormField
+                                control={form.control}
+                                name="specialization"
+                                render={({ field }) => (
+                                    <FormItem className="grid gap-3">
+                                        <FormLabel>specialization</FormLabel>
+                                        <FormControl>
+                                            <Input type="text" placeholder="Neurologist, Cardiothoracic Surgeon etc." {...field} value={field?.value || ""} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            {/* TODO make dropdown */}
+                            <FormField
+                                control={form.control}
+                                name="yearOfExperience"
+                                render={({ field }) => (
+                                    <FormItem className="grid gap-3">
+                                        <FormLabel>Year Of Experience</FormLabel>
+                                        <FormControl>
+                                            <Input type="text" placeholder="5, 3 or 2" {...field} value={field?.value || ""} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            {/* TODO make dropdown */}
+
+                            <FormField
+                                control={form.control}
+                                name="currentHospitalOrClinic"
+                                render={({ field }) => (
+                                    <FormItem className="grid gap-3">
+                                        <FormLabel>Current Hospital Or Clinic</FormLabel>
+                                        <FormControl>
+                                            <Input type="text" placeholder="Square Hospitals Ltd., United Hospital etc" {...field} value={field?.value || ""} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="degrees"
+                                render={({ field }) => (
+                                    <FormItem className="grid gap-3">
+                                        <FormLabel>Degrees</FormLabel>
+                                        <FormControl>
+                                            <Input type="text" placeholder="MBBS, BDS, FCPS etc.." {...field} value={field?.value || ""} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <ImageUploader setImage={setDegrees} setImagePreview={setDegreePreview} label="Attach Medical Degree (Image Format)" id="degrees" />
+                            <ImagePreviewer setImageFiles={setDegrees} imagePreview={degreePreview} setImagePreview={setDegreePreview} />
 
                             {/* {
                                 isLoading? <Button disabled className="w-full cursor-not-allowed">
