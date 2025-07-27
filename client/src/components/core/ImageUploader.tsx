@@ -1,11 +1,13 @@
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { useState } from "react";
-import ImagePreviewer from "./ImagePreviewer";
 
-const ImageUploader = () => {
-    const [image, setImage] = useState<File[] | []>([]);
-    const [imagePreview, setImagePreview] = useState<string[] | []>([])
+interface IProps {
+    setImage: React.Dispatch<React.SetStateAction<[] | File[]>>;
+    setImagePreview: React.Dispatch<React.SetStateAction<[] | string[]>>;
+    label?: string
+}
+
+const ImageUploader = ({setImage, setImagePreview, label = "Upload Image"}: IProps) => {
 
     const handleSetImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files![0]
@@ -22,13 +24,10 @@ const ImageUploader = () => {
         event.target.value =  ""
     }
 
-    console.log(image)
-
     return (
         <div className="grid w-full items-center gap-3">
-            <Label htmlFor="profileImg">Profile Picture</Label>
+            <Label htmlFor="profileImg">{label}</Label>
             <Input id="profileImg" onChange={handleSetImage} type="file" />
-            <ImagePreviewer setImageFiles={setImage} imagePreview={imagePreview} setImagePreview={setImagePreview} />
         </div>
     )
 }

@@ -9,20 +9,28 @@ import { Link } from "react-router"
 import { doctorValidationSchema } from "@/pages/registration/doctor/Validation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import ImageUploader from "./core/ImageUploader"
+import { useState } from "react"
+import ImagePreviewer from "./core/ImagePreviewer"
 
 export function DoctorRegistrationForm({
-  className,
-  ...props
+    className,
+    ...props
 }: React.ComponentProps<"div">) {
 
-  const form = useForm({
-    resolver: zodResolver(doctorValidationSchema)
-  });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => console.log(data)
+    const [image, setImage] = useState<File[] | []>([]);
+    const [imagePreview, setImagePreview] = useState<string[] | []>([])
 
-  return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    const form = useForm({
+        resolver: zodResolver(doctorValidationSchema)
+    });
+
+    const onSubmit: SubmitHandler<FieldValues> = (data) => console.log(data)
+
+    console.log(image)
+
+    return (
+        <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card className="overflow-hidden p-0">
                 <CardContent className="grid p-0 md:grid-cols-2">
                     <Form {...form}>
@@ -146,7 +154,9 @@ export function DoctorRegistrationForm({
                                     </FormItem>
                                 )}
                             />
-                            <ImageUploader />
+                            <ImageUploader setImage={setImage} setImagePreview={setImagePreview} label="Profile Picture" />
+                            <ImagePreviewer setImageFiles={setImage} imagePreview={imagePreview} setImagePreview={setImagePreview} />
+
                             {/* {
                                 isLoading? <Button disabled className="w-full cursor-not-allowed">
                                 Registering...
@@ -175,5 +185,5 @@ export function DoctorRegistrationForm({
                 </CardContent>
             </Card>
         </div>
-  )
+    )
 }
